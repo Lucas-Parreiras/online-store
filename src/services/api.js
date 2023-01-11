@@ -10,7 +10,6 @@ export async function getProductsFromCategoryAndQuery(categoryId, query) {
   const data = await fetch(url);
   const response = await data.json();
   return response;
-  // Implemente aqui! Quando o fizer, descomente os parâmetros que essa função recebe
 }
 
 export async function getProductById() {
