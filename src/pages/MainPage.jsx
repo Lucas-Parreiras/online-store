@@ -20,8 +20,8 @@ class MainPage extends React.Component {
 
   getListProduct = async () => {
     const { query } = this.state;
-    const productList = await getProductsFromCategoryAndQuery('', query);
-    this.setState({ products: productList, firstSearch: true });
+    const { results } = await getProductsFromCategoryAndQuery('', query);
+    this.setState({ products: results, firstSearch: true });
   };
 
   handleOnChange = ({ target }) => {
