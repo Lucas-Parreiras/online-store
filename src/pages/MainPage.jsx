@@ -1,18 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import navegation from '../services/navegation';
-import { getCategories } from '../services/api';
+import { getProductsFromCategoryAndQuery, getCategories } from '../services/api';
 import SearchInput from '../components/SearchInput';
 import CategoryAside from '../components/CategoryAside';
+import ProductList from '../components/ProductList';
 
 class MainPage extends React.Component {
   state = {
     categories: [],
+    products: [],
+    query: '',
+    firstSearch: false,
   };
 
   componentDidMount() {
     this.renderCategories();
   }
+
+  getListProduct = async () => {
+    const { query } = this.state;
+    const productList = await getProductsFromCategoryAndQuery('', query);
+    this.setState({ products: productList, firstSearch: true });
+  };
+
+  handleOnChange = ({ target }) => {
+    const { name, value } = target;
+    this.setState({ [name]: value });
+  };
 
   renderCategories = async () => {
     const categories = await getCategories();
@@ -21,11 +36,14 @@ class MainPage extends React.Component {
 
   render() {
     const { history } = this.props;
-    const { categories } = this.state;
+    const { categories, products, firstSearch } = this.state;
     return (
       <>
         <CategoryAside categories={ categories } />
-        <SearchInput />
+        <SearchInput
+          handleOnChange={ this.handleOnChange }
+          getListProducts={ this.getListProduct }
+        />
         <button
           data-testid="shopping-cart-button"
           type="submit"
@@ -33,16 +51,24 @@ class MainPage extends React.Component {
         >
           Carrinho
         </button>
-        <p data-testid="home-initial-message">
-          Digite algum termo de pesquisa ou escolha uma categoria.
-        </p>
+        {
+          products.length === 0 ? (
+            <p data-testid="home-initial-message">
+              { firstSearch
+                ? 'Nenhum produto foi encontrado'
+                : 'Digite algum termo de pesquisa ou escolha uma categoria.'}
+            </p>
+          ) : <ProductList productList={ products } />
+        }
       </>
     );
   }
 }
 
 MainPage.propTypes = {
-  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 };
 
 export default MainPage;
