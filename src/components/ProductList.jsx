@@ -9,6 +9,7 @@ export default class ProductList extends Component {
       <>
         {productList.map(({ id, thumbnail, price, title }) => (<ProductCard
           key={ id }
+          id={ id }
           image={ thumbnail }
           price={ price }
           title={ title }
