@@ -8,6 +8,7 @@ export default class DetailProduct extends Component {
     image: '',
     name: '',
     price: 0,
+    id: ''
   };
 
   componentDidMount() {
@@ -19,15 +20,17 @@ export default class DetailProduct extends Component {
     const product = await getProductById(params.id);
     this.setState({ name: product.title,
       image: product.thumbnail,
+      id: params.id,
       price: product.price });
   };
 
   handleAddToCart = () => {
-    const { image, price, name } = this.state;
+    const { image, price, name, id } = this.state;
     const products = {
       image,
       price,
       name,
+      id,
     };
     if (!localStorage.getItem('cart')) {
       localStorage.setItem('cart', JSON.stringify([]));
