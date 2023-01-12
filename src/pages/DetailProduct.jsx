@@ -22,6 +22,23 @@ export default class DetailProduct extends Component {
       price: product.price });
   };
 
+  handleAddToCart = () => {
+    const { image, price, name } = this.state;
+    const products = {
+      image,
+      price,
+      name,
+    };
+    if (!localStorage.getItem('cart')) {
+      localStorage.setItem('cart', JSON.stringify([]));
+      console.log(localStorage);
+    }
+    const localCart = localStorage.getItem('cart');
+    const cartColection = JSON.parse(localCart);
+    cartColection.push(products);
+    localStorage.setItem('cart', JSON.stringify(cartColection));
+  };
+
   render() {
     const { image, name, price } = this.state;
     const { history } = this.props;
@@ -39,7 +56,14 @@ export default class DetailProduct extends Component {
           data-testid="shopping-cart-button"
           onClick={ () => navegation('/shoppingcart', history) }
         >
-          Adicionar ao carrinho
+          Finalizar compra
+        </button>
+        <button
+          onClick={ this.handleAddToCart }
+          type="submit"
+          data-testid="product-detail-add-to-cart"
+        >
+          Adicionar ao Carrinho
         </button>
       </div>
     );
