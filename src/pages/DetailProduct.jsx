@@ -34,7 +34,11 @@ export default class DetailProduct extends Component {
         </h2>
         <img src={ image } alt="" data-testid="product-detail-image" />
         <p data-testid="product-detail-price">{price}</p>
-        <button type="submit" onClick={ () => navegation('/shoppingcart', history) }>
+        <button
+          type="submit"
+          data-testid="shopping-cart-button"
+          onClick={ () => navegation('/shoppingcart', history) }
+        >
           Adicionar ao carrinho
         </button>
       </div>
