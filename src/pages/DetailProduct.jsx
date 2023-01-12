@@ -8,7 +8,7 @@ export default class DetailProduct extends Component {
     image: '',
     name: '',
     price: 0,
-    id: ''
+    id: '',
   };
 
   componentDidMount() {
