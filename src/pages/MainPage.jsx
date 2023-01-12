@@ -24,6 +24,13 @@ class MainPage extends React.Component {
     this.setState({ products: results, firstSearch: true });
   };
 
+  // Função criadaa para desenvolvimento Requisito 06.
+
+  categoryRenderList = async (event) => {
+    const data = await getProductsFromCategoryAndQuery(event.target.id, '');
+    this.setState({ products: data.results });
+  };
+
   handleOnChange = ({ target }) => {
     const { name, value } = target;
     this.setState({ [name]: value });
@@ -39,7 +46,10 @@ class MainPage extends React.Component {
     const { categories, products, firstSearch } = this.state;
     return (
       <>
-        <CategoryAside categories={ categories } />
+        <CategoryAside
+          categories={ categories }
+          categoryRenderList={ this.categoryRenderList }
+        />
         <SearchInput
           handleOnChange={ this.handleOnChange }
           getListProducts={ this.getListProduct }
