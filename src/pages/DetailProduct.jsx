@@ -8,6 +8,7 @@ export default class DetailProduct extends Component {
     image: '',
     name: '',
     price: 0,
+    id: '',
   };
 
   componentDidMount() {
@@ -19,7 +20,26 @@ export default class DetailProduct extends Component {
     const product = await getProductById(params.id);
     this.setState({ name: product.title,
       image: product.thumbnail,
+      id: params.id,
       price: product.price });
+  };
+
+  handleAddToCart = () => {
+    const { image, price, name, id } = this.state;
+    const products = {
+      image,
+      price,
+      name,
+      id,
+    };
+    if (!localStorage.getItem('cart')) {
+      localStorage.setItem('cart', JSON.stringify([]));
+      console.log(localStorage);
+    }
+    const localCart = localStorage.getItem('cart');
+    const cartColection = JSON.parse(localCart);
+    cartColection.push(products);
+    localStorage.setItem('cart', JSON.stringify(cartColection));
   };
 
   render() {
@@ -39,7 +59,14 @@ export default class DetailProduct extends Component {
           data-testid="shopping-cart-button"
           onClick={ () => navegation('/shoppingcart', history) }
         >
-          Adicionar ao carrinho
+          Finalizar compra
+        </button>
+        <button
+          onClick={ this.handleAddToCart }
+          type="submit"
+          data-testid="product-detail-add-to-cart"
+        >
+          Adicionar ao Carrinho
         </button>
       </div>
     );
