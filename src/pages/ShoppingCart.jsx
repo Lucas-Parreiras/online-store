@@ -1,22 +1,35 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import ProductCartList from '../components/ProductCartList';
 
 class ShoppingCart extends React.Component {
+  state = {
+    productList: [],
+  };
+
+  componentDidMount() {
+    const productList = JSON.parse(localStorage.getItem('cart'));
+    this.setState({ productList });
+  }
+
   render() {
-    // const { productsList } = this.props;
+    const { productList } = this.state;
     const messageEmptyCart = 'Seu carrinho está vazio';
     return (
-      <p data-testid="shopping-cart-empty-message">{ messageEmptyCart }</p>
+      <div>
+        {
+          productList ? (
+            <ProductCartList
+              productList={ productList }
+            />
+          ) : (
+            <p data-testid="shopping-cart-empty-message">
+              { messageEmptyCart }
+            </p>
+          )
+        }
+      </div>
     );
   }
 }
-
-// ShoppingCart.propTypes = {
-//   productList: PropTypes.array,
-// };
-
-// ShoppingCart.defaultProps = {
-//   productList: [],
-// };
 
 export default ShoppingCart;

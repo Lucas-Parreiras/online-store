@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { getProductById } from '../services/api';
 import navegation from '../services/navegation';
+import saveProduct from '../services/handlelocalstorage';
 
 export default class DetailProduct extends Component {
   state = {
@@ -24,26 +25,8 @@ export default class DetailProduct extends Component {
       price: product.price });
   };
 
-  handleAddToCart = () => {
-    const { image, price, name, id } = this.state;
-    const products = {
-      image,
-      price,
-      name,
-      id,
-    };
-    if (!localStorage.getItem('cart')) {
-      localStorage.setItem('cart', JSON.stringify([]));
-      console.log(localStorage);
-    }
-    const localCart = localStorage.getItem('cart');
-    const cartColection = JSON.parse(localCart);
-    cartColection.push(products);
-    localStorage.setItem('cart', JSON.stringify(cartColection));
-  };
-
   render() {
-    const { image, name, price } = this.state;
+    const { image, name, price, id } = this.state;
     const { history } = this.props;
     return (
       <div>
@@ -62,7 +45,7 @@ export default class DetailProduct extends Component {
           Finalizar compra
         </button>
         <button
-          onClick={ this.handleAddToCart }
+          onClick={ () => saveProduct({ image, price, title: name, id }) }
           type="submit"
           data-testid="product-detail-add-to-cart"
         >

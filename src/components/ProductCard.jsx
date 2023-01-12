@@ -1,17 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import saveProduct from '../services/handlelocalstorage';
 
 export default class ProductCard extends Component {
-  saveProduct = (objProduct) => {
-    const actualCart = JSON.parse(localStorage.getItem('cart'));
-    if (actualCart === null) {
-      localStorage.setItem('cart', JSON.stringify([objProduct]));
-    } else {
-      localStorage.setItem('cart', JSON.stringify([objProduct, ...actualCart]));
-    }
-  };
-
   render() {
     const { image, price, title, id } = this.props;
     const link = `/product/${id}`;
@@ -27,7 +19,7 @@ export default class ProductCard extends Component {
         <button
           type="submit"
           data-testid="product-add-to-cart"
-          onClick={ () => this.saveProduct({ id, title, price, image }) }
+          onClick={ () => saveProduct({ image, price, title, id }) }
         >
           Adicionar ao carrinho
         </button>
