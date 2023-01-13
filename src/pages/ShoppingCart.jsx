@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import ProductCartList from '../components/ProductCartList';
 
 class ShoppingCart extends React.Component {
@@ -8,16 +9,17 @@ class ShoppingCart extends React.Component {
 
   componentDidMount() {
     const productList = JSON.parse(localStorage.getItem('cart'));
-    this.setState({ productList });
+    this.setState({ productList: productList || [] });
   }
 
   render() {
     const { productList } = this.state;
     const messageEmptyCart = 'Seu carrinho está vazio';
+    const checkoutLink = '/checkout';
     return (
       <div>
         {
-          productList ? (
+          productList.length !== 0 ? (
             <ProductCartList
               productList={ productList }
             />
@@ -27,6 +29,14 @@ class ShoppingCart extends React.Component {
             </p>
           )
         }
+        <Link to={ checkoutLink }>
+          <button
+            data-testid="checkout-products"
+            type="submit"
+          >
+            Finalizar Compra
+          </button>
+        </Link>
       </div>
     );
   }

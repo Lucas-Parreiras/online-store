@@ -16,7 +16,7 @@ const saveProduct = ({ image, price, title, id }) => {
     product.quantity += 1;
     localStorage.setItem('cart', JSON.stringify(actualCart));
   } else {
-    localStorage.setItem('cart', JSON.stringify([objProduct, ...actualCart]));
+    localStorage.setItem('cart', JSON.stringify([...actualCart, objProduct]));
   }
 };
 
