@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import FreeShipping from './FreeShipping';
 import saveProduct from '../services/handlelocalstorage';
 
 export default class ProductCard extends Component {
   render() {
-    const { image, price, title, id } = this.props;
+    const { image, price, title, id, freeShipping } = this.props;
     const link = `/product/${id}`;
     return (
       <>
@@ -13,6 +14,7 @@ export default class ProductCard extends Component {
           <div data-testid="product">
             <h2>{title}</h2>
             <img src={ image } alt="" />
+            <FreeShipping freeShipping={ freeShipping } />
             <p>{price}</p>
           </div>
         </Link>
@@ -33,4 +35,5 @@ ProductCard.propTypes = {
   price: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
+  freeShipping: PropTypes.bool.isRequired,
 };
