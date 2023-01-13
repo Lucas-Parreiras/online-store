@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { removeProduct } from '../services/handlelocalstorage';
 
 class ProductCardCart extends React.Component {
   render() {
-    const { quantity, title, price, image } = this.props;
+    const { id, quantity, title, price, image } = this.props;
 
     return (
       <>
@@ -11,12 +12,22 @@ class ProductCardCart extends React.Component {
         <img src={ image } alt="" />
         <p>{ price }</p>
         <p data-testid="shopping-cart-product-quantity">{ quantity }</p>
+        <button
+          data-testid="remove-product"
+          type="button"
+          onClick={ () => removeProduct(id) }
+        >
+          X
+        </button>
+        <button data-testid="product-decrease-quantity" type="button">-</button>
+        <button data-testid="product-increase-quantity" type="button">+</button>
       </>
     );
   }
 }
 
 ProductCardCart.propTypes = {
+  id: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   quantity: PropTypes.number.isRequired,

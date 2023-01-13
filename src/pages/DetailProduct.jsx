@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { getProductById } from '../services/api';
 import navegation from '../services/navegation';
-import saveProduct from '../services/handlelocalstorage';
+import { saveProduct } from '../services/handlelocalstorage';
 
 export default class DetailProduct extends Component {
   state = {

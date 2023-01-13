@@ -1,4 +1,4 @@
-const saveProduct = ({ image, price, title, id }) => {
+export const saveProduct = ({ image, price, title, id }) => {
   const objProduct = {
     id,
     title,
@@ -20,4 +20,11 @@ const saveProduct = ({ image, price, title, id }) => {
   }
 };
 
-export default saveProduct;
+export const removeProduct = (id) => {
+  const actualCart = JSON.parse(localStorage.getItem('cart'));
+  const product = actualCart.find((e) => e.id === id);
+  const productId = actualCart.indexOf(product);
+  actualCart.splice(productId, 1);
+  localStorage.setItem('cart', JSON.stringify(actualCart));
+  // console.log(actualCart);
+};
