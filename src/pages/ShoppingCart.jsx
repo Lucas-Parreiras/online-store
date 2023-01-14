@@ -6,20 +6,14 @@ class ShoppingCart extends React.Component {
     productList: [],
   };
 
-  // updateCart = () => {
-  //   this.setState({
-  //     productList:
-  //   })
-  // }
-
   componentDidMount() {
     const productList = JSON.parse(localStorage.getItem('cart'));
     this.setState({ productList });
   }
 
-  updateCart = (a) => {
+  updateCart = (list) => {
     this.setState({
-      productList: a,
+      productList: list,
     });
   };
 
@@ -29,7 +23,7 @@ class ShoppingCart extends React.Component {
     return (
       <div>
         {
-          productList ? (
+          productList.length !== 0 ? (
             <ProductCartList
               productList={ productList }
               updateCart={ this.updateCart }
