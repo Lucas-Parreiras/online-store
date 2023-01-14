@@ -6,10 +6,22 @@ class ShoppingCart extends React.Component {
     productList: [],
   };
 
+  // updateCart = () => {
+  //   this.setState({
+  //     productList:
+  //   })
+  // }
+
   componentDidMount() {
     const productList = JSON.parse(localStorage.getItem('cart'));
     this.setState({ productList });
   }
+
+  updateCart = (a) => {
+    this.setState({
+      productList: a,
+    });
+  };
 
   render() {
     const { productList } = this.state;
@@ -20,6 +32,7 @@ class ShoppingCart extends React.Component {
           productList ? (
             <ProductCartList
               productList={ productList }
+              updateCart={ this.updateCart }
             />
           ) : (
             <p data-testid="shopping-cart-empty-message">

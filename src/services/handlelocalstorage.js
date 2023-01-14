@@ -26,5 +26,6 @@ export const removeProduct = (id) => {
   const productId = actualCart.indexOf(product);
   actualCart.splice(productId, 1);
   localStorage.setItem('cart', JSON.stringify(actualCart));
+  return actualCart;
   // console.log(actualCart);
 };

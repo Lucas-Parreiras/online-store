@@ -4,7 +4,8 @@ import ProductCardCart from './ProductCardCart';
 
 export default class ProductCartList extends Component {
   render() {
-    const { productList } = this.props;
+    const { productList, updateCart } = this.props;
+    // test();
     return (
       <div>
         {productList.map(({ id, image, price, title, quantity }) => (<ProductCardCart
@@ -14,6 +15,7 @@ export default class ProductCartList extends Component {
           price={ price }
           title={ title }
           quantity={ quantity }
+          updateCart={ updateCart }
         />))}
       </div>
     );
@@ -21,6 +23,7 @@ export default class ProductCartList extends Component {
 }
 
 ProductCartList.propTypes = {
+  updateCart: PropTypes.func.isRequired,
   productList: PropTypes.shape({
     map: PropTypes.func,
     id: PropTypes.string,

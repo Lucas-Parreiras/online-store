@@ -4,7 +4,7 @@ import { removeProduct } from '../services/handlelocalstorage';
 
 class ProductCardCart extends React.Component {
   render() {
-    const { id, quantity, title, price, image } = this.props;
+    const { id, quantity, title, price, image, updateCart } = this.props;
 
     return (
       <>
@@ -15,7 +15,7 @@ class ProductCardCart extends React.Component {
         <button
           data-testid="remove-product"
           type="button"
-          onClick={ () => removeProduct(id) }
+          onClick={ () => updateCart(removeProduct(id)) }
         >
           X
         </button>
@@ -27,6 +27,7 @@ class ProductCardCart extends React.Component {
 }
 
 ProductCardCart.propTypes = {
+  updateCart: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
