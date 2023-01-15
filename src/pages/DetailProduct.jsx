@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { getProductById } from '../services/api';
 import navegation from '../services/navegation';
 import { saveProduct } from '../services/handlelocalstorage';
+import FreeShipping from '../components/FreeShipping';
 
 export default class DetailProduct extends Component {
   state = {
@@ -19,22 +20,23 @@ export default class DetailProduct extends Component {
   handleProductById = async () => {
     const { match: { params } } = this.props;
     const product = await getProductById(params.id);
-    this.setState({ name: product.title,
+    const { shipping } = product;
+    this.setState({
+      name: product.title,
       image: product.thumbnail,
       id: params.id,
-      price: product.price });
+      price: product.price,
+      freeShipping: shipping.free_shipping,
+    });
   };
 
   render() {
-    const { image, name, price, id } = this.state;
+    const { image, name, price, id, freeShipping } = this.state;
     const { history } = this.props;
     return (
       <div>
-        <h2 data-testid="product-detail-name">
-          {' '}
-          {name}
-          {' '}
-        </h2>
+        <h2 data-testid="product-detail-name">{name}</h2>
+        <FreeShipping freeShipping={ freeShipping } />
         <img src={ image } alt="" data-testid="product-detail-image" />
         <p data-testid="product-detail-price">{price}</p>
         <button
