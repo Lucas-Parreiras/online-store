@@ -17,6 +17,7 @@ class ProductCardCart extends React.Component {
   }
 
   increaseProduct = (id) => {
+    const { updateGrandTotal } = this.props;
     const { product, actualCart } = getProduct(id);
     product.quantity += 1;
     product.total = product.quantity * product.price;
@@ -25,9 +26,11 @@ class ProductCardCart extends React.Component {
       qt: product.quantity,
       total: product.total,
     });
+    updateGrandTotal(product.price);
   };
 
   decreaseProduct = (id) => {
+    const { updateGrandTotal } = this.props;
     const { product, actualCart } = getProduct(id);
     if (product.quantity > 1) {
       product.quantity -= 1;
@@ -37,11 +40,19 @@ class ProductCardCart extends React.Component {
         qt: product.quantity,
         total: product.total,
       });
+      const inverter = -1;
+      updateGrandTotal(product.price * inverter);
     }
   };
 
+  remove = () => {
+    const { id, updateCart, updateGrandTotal, total } = this.props;
+    updateCart(removeProduct(id));
+    updateGrandTotal(-total);
+  };
+
   render() {
-    const { id, title, price, image, updateCart } = this.props;
+    const { id, title, price, image } = this.props;
     const { qt, total } = this.state;
 
     return (
@@ -53,7 +64,7 @@ class ProductCardCart extends React.Component {
         <button
           data-testid="remove-product"
           type="button"
-          onClick={ () => updateCart(removeProduct(id)) }
+          onClick={ this.remove }
         >
           X
         </button>
@@ -78,6 +89,7 @@ class ProductCardCart extends React.Component {
 }
 
 ProductCardCart.propTypes = {
+  updateGrandTotal: PropTypes.func.isRequired,
   updateCart: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,

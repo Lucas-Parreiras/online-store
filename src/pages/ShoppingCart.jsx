@@ -8,7 +8,9 @@ class ShoppingCart extends React.Component {
 
   componentDidMount() {
     const productList = JSON.parse(localStorage.getItem('cart'));
-    this.setState({ productList });
+    this.setState({
+      productList,
+    });
   }
 
   updateCart = (list) => {
