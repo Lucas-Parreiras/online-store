@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { saveProduct } from '../services/handlelocalstorage';
 import FreeShipping from './FreeShipping';
-import saveProduct from '../services/handlelocalstorage';
 
 export default class ProductCard extends Component {
   render() {

@@ -9,8 +9,18 @@ class ShoppingCart extends React.Component {
 
   componentDidMount() {
     const productList = JSON.parse(localStorage.getItem('cart'));
-    this.setState({ productList: productList || [] });
+    if (productList) {
+      this.setState({
+        productList,
+      });
+    }
   }
+
+  updateCart = (list) => {
+    this.setState({
+      productList: list,
+    });
+  };
 
   render() {
     const { productList } = this.state;
@@ -22,6 +32,7 @@ class ShoppingCart extends React.Component {
           productList.length !== 0 ? (
             <ProductCartList
               productList={ productList }
+              updateCart={ this.updateCart }
             />
           ) : (
             <p data-testid="shopping-cart-empty-message">
