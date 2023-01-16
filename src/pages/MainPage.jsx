@@ -1,22 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import navegation from '../services/navegation';
-import { getProductsFromCategoryAndQuery, getCategories } from '../services/api';
+import { getProductsFromCategoryAndQuery } from '../services/api';
 import SearchInput from '../components/SearchInput';
 import CategoryAside from '../components/CategoryAside';
 import ProductList from '../components/ProductList';
 
 class MainPage extends React.Component {
   state = {
-    categories: [],
+    // categories: [],
     products: [],
     query: '',
     firstSearch: false,
   };
-
-  componentDidMount() {
-    this.renderCategories();
-  }
 
   getListProduct = async () => {
     const { query } = this.state;
@@ -26,29 +22,22 @@ class MainPage extends React.Component {
 
   // Função criadaa para desenvolvimento Requisito 06.
 
-  categoryRenderList = async (event) => {
-    const data = await getProductsFromCategoryAndQuery(event.target.id, '');
-    this.setState({ products: data.results });
-  };
-
   handleOnChange = ({ target }) => {
     const { name, value } = target;
     this.setState({ [name]: value });
   };
 
-  renderCategories = async () => {
-    const categories = await getCategories();
-    this.setState({ categories });
+  updateProducts = (data) => {
+    this.setState({ products: data.results });
   };
 
   render() {
     const { history } = this.props;
-    const { categories, products, firstSearch } = this.state;
+    const { products, firstSearch } = this.state;
     return (
       <>
         <CategoryAside
-          categories={ categories }
-          categoryRenderList={ this.categoryRenderList }
+          updateProducts={ this.updateProducts }
         />
         <SearchInput
           handleOnChange={ this.handleOnChange }

@@ -1,9 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 
 export default class CategoryAside extends React.Component {
+  state = {
+    categories: [],
+  };
+
+  componentDidMount() {
+    this.renderCategories();
+  }
+
+  categoryRenderList = async (event) => {
+    const { updateProducts } = this.props;
+    const data = await getProductsFromCategoryAndQuery(event.target.id, '');
+    updateProducts(data);
+  };
+
+  renderCategories = async () => {
+    const categories = await getCategories();
+    this.setState({ categories });
+  };
+
   render() {
-    const { categories, categoryRenderList } = this.props;
+    const { categories } = this.state;
 
     return (
       <aside className="CategoryAside">
@@ -14,7 +34,7 @@ export default class CategoryAside extends React.Component {
               type="radio"
               name="category"
               id={ id }
-              onClick={ categoryRenderList }
+              onClick={ this.categoryRenderList }
             />
             <label htmlFor={ id } data-testid="category">{ name }</label>
           </div>
@@ -25,11 +45,12 @@ export default class CategoryAside extends React.Component {
 }
 
 CategoryAside.propTypes = {
-  categoryRenderList: PropTypes.func.isRequired,
-  categories: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string,
-      id: PropTypes.string,
-    }),
-  ).isRequired,
+  updateProducts: PropTypes.func.isRequired,
+  // categoryRenderList: PropTypes.func.isRequired,
+  // categories: PropTypes.arrayOf(
+  //   PropTypes.shape({
+  //     name: PropTypes.string,
+  //     id: PropTypes.string,
+  //   }),
+  // ).isRequired,
 };

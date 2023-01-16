@@ -3,40 +3,100 @@ import React, { Component } from 'react';
 import { getProductById } from '../services/api';
 import navegation from '../services/navegation';
 import { saveProduct } from '../services/handlelocalstorage';
-import FreeShipping from '../components/FreeShipping';
+import CommentForm from '../components/CommentForm';
+import CommentSection from '../components/CommentSection';
+import CategoryAside from '../components/CategoryAside';
 
 export default class DetailProduct extends Component {
+  INITIAL_FORM = {
+    email: '',
+    message: '',
+    rating: '',
+  };
+
   state = {
     image: '',
     name: '',
     price: 0,
     id: '',
+    comments: [],
+    formError: false,
+    commentForm: this.INITIAL_FORM,
   };
 
   componentDidMount() {
     this.handleProductById();
+    const { match: { params } } = this.props;
+    const comments = JSON.parse(localStorage.getItem(params.id));
+    if (!comments) {
+      localStorage.setItem(params.id, '[]');
+      return;
+    }
+    this.setState({ comments });
   }
+
+  handleOnChange = ({ target: { name, value } }) => {
+    this.setState((prevState) => ({
+      commentForm: {
+        ...prevState.commentForm,
+        [name]: value,
+      },
+    }));
+  };
+
+  handleSaveComment = () => {
+    const { commentForm, id, comments } = this.state;
+    this.setState({ formError: false });
+    let commentsLocalStorage = JSON.parse(localStorage.getItem(id));
+    if (!commentsLocalStorage) {
+      localStorage.setItem(id, '[]');
+      commentsLocalStorage = JSON.parse(localStorage.getItem(id));
+    }
+    commentsLocalStorage.push(commentForm);
+
+    // const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const isEmailValid = re.test(commentForm.email);
+    if (!isEmailValid || commentForm.rating === '') {
+      this.setState({ formError: true });
+      return;
+    }
+    this.setState({ comments: [...comments, commentForm] });
+    this.setState({ commentForm: this.INITIAL_FORM });
+    localStorage.setItem(id, JSON.stringify(commentsLocalStorage));
+  };
 
   handleProductById = async () => {
     const { match: { params } } = this.props;
     const product = await getProductById(params.id);
-    const { shipping } = product;
+    // const { shipping } = product;
     this.setState({
       name: product.title,
       image: product.thumbnail,
       id: params.id,
       price: product.price,
-      freeShipping: shipping.free_shipping,
+      // freeShipping: shipping.free_shipping,
     });
   };
 
-  render() {
-    const { image, name, price, id, freeShipping } = this.state;
+  updateProducts = (data) => {
     const { history } = this.props;
+    history.push('/', data.results);
+  };
+
+  render() {
+    const { image, name, price, id, comments, commentForm, formError } = this.state;
+    const { email, message } = commentForm;
+    const { history } = this.props;
+    const errorInputMessage = <p data-testid="error-msg">Campos inválidos</p>;
     return (
       <div>
-        <h2 data-testid="product-detail-name">{name}</h2>
-        <FreeShipping freeShipping={ freeShipping } />
+        <CategoryAside updateProducts={ this.updateProducts } />
+        <h2 data-testid="product-detail-name">
+          {' '}
+          {name}
+          {' '}
+        </h2>
         <img src={ image } alt="" data-testid="product-detail-image" />
         <p data-testid="product-detail-price">{price}</p>
         <button
@@ -53,6 +113,17 @@ export default class DetailProduct extends Component {
         >
           Adicionar ao Carrinho
         </button>
+        <CommentForm
+          id={ id }
+          handleOnChange={ this.handleOnChange }
+          handleSaveComment={ this.handleSaveComment }
+          email={ email }
+          message={ message }
+        />
+        <CommentSection comments={ comments } />
+        {
+          formError ? errorInputMessage : ''
+        }
       </div>
     );
   }
