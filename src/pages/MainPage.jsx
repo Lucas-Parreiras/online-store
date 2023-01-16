@@ -5,6 +5,7 @@ import { getProductsFromCategoryAndQuery } from '../services/api';
 import SearchInput from '../components/SearchInput';
 import CategoryAside from '../components/CategoryAside';
 import ProductList from '../components/ProductList';
+import cart from '../services/cart';
 
 class MainPage extends React.Component {
   state = {
@@ -12,6 +13,17 @@ class MainPage extends React.Component {
     products: [],
     query: '',
     firstSearch: false,
+    cartCounter: 0,
+  };
+
+  componentDidMount() {
+    this.updateCounter();
+  }
+
+  updateCounter = () => {
+    this.setState({
+      cartCounter: cart(),
+    });
   };
 
   getListProduct = async () => {
@@ -33,7 +45,7 @@ class MainPage extends React.Component {
 
   render() {
     const { history } = this.props;
-    const { products, firstSearch } = this.state;
+    const { products, firstSearch, cartCounter } = this.state;
     return (
       <>
         <CategoryAside
@@ -48,6 +60,7 @@ class MainPage extends React.Component {
           type="submit"
           onClick={ () => navegation('/shoppingcart', history) }
         >
+          <p data-testid="shopping-cart-size">{cartCounter}</p>
           Carrinho
         </button>
         {
@@ -57,7 +70,10 @@ class MainPage extends React.Component {
                 ? 'Nenhum produto foi encontrado'
                 : 'Digite algum termo de pesquisa ou escolha uma categoria.'}
             </p>
-          ) : <ProductList productList={ products } />
+          ) : <ProductList
+            updateCounter={ this.updateCounter }
+            productList={ products }
+          />
         }
       </>
     );

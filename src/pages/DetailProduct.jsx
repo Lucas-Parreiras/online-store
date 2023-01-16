@@ -6,6 +6,7 @@ import { saveProduct } from '../services/handlelocalstorage';
 import CommentForm from '../components/CommentForm';
 import CommentSection from '../components/CommentSection';
 import CategoryAside from '../components/CategoryAside';
+import cart from '../services/cart';
 
 export default class DetailProduct extends Component {
   INITIAL_FORM = {
@@ -22,9 +23,11 @@ export default class DetailProduct extends Component {
     comments: [],
     formError: false,
     commentForm: this.INITIAL_FORM,
+    cartCounter: 0,
   };
 
   componentDidMount() {
+    this.updateCounter();
     this.handleProductById();
     const { match: { params } } = this.props;
     const comments = JSON.parse(localStorage.getItem(params.id));
@@ -34,6 +37,12 @@ export default class DetailProduct extends Component {
     }
     this.setState({ comments });
   }
+
+  updateCounter = () => {
+    this.setState({
+      cartCounter: cart(),
+    });
+  };
 
   handleOnChange = ({ target: { name, value } }) => {
     this.setState((prevState) => ({
@@ -84,8 +93,16 @@ export default class DetailProduct extends Component {
     history.push('/', data.results);
   };
 
+  hundleClick = () => {
+    const { image, price, name: title, id } = this.state;
+    saveProduct({ image, price, title, id });
+    this.updateCounter();
+  };
+
   render() {
-    const { image, name, price, id, comments, commentForm, formError } = this.state;
+    const {
+      image, name, price, id, comments, commentForm, formError, cartCounter,
+    } = this.state;
     const { email, message } = commentForm;
     const { history } = this.props;
     const errorInputMessage = <p data-testid="error-msg">Campos inválidos</p>;
@@ -104,10 +121,11 @@ export default class DetailProduct extends Component {
           data-testid="shopping-cart-button"
           onClick={ () => navegation('/shoppingcart', history) }
         >
+          <p data-testid="shopping-cart-size">{cartCounter}</p>
           Finalizar compra
         </button>
         <button
-          onClick={ () => saveProduct({ image, price, title: name, id }) }
+          onClick={ this.hundleClick }
           type="submit"
           data-testid="product-detail-add-to-cart"
         >
