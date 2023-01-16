@@ -22,6 +22,15 @@ export const saveProduct = ({ image, price, title, id }) => {
   }
 };
 
+export const getCart = () => {
+  const saveCart = JSON.parse(localStorage.getItem('cart'));
+  if (saveCart === null) {
+    localStorage.setItem('cart', JSON.stringify([]));
+    return [];
+  }
+  return saveCart;
+};
+
 export const getProduct = (id) => {
   const actualCart = JSON.parse(localStorage.getItem('cart'));
   const product = actualCart.find((e) => e.id === id);

@@ -5,6 +5,12 @@ import { saveProduct } from '../services/handlelocalstorage';
 import FreeShipping from './FreeShipping';
 
 export default class ProductCard extends Component {
+  hundleClick = () => {
+    const { image, price, title, id, updateCounter } = this.props;
+    saveProduct({ image, price, title, id });
+    updateCounter();
+  };
+
   render() {
     const { image, price, title, id, freeShipping } = this.props;
     const link = `/product/${id}`;
@@ -21,7 +27,7 @@ export default class ProductCard extends Component {
         <button
           type="submit"
           data-testid="product-add-to-cart"
-          onClick={ () => saveProduct({ image, price, title, id }) }
+          onClick={ this.hundleClick }
         >
           Adicionar ao carrinho
         </button>
@@ -36,4 +42,5 @@ ProductCard.propTypes = {
   title: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   freeShipping: PropTypes.bool.isRequired,
+  updateCounter: PropTypes.func.isRequired,
 };

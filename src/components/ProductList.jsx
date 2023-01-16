@@ -4,11 +4,12 @@ import ProductCard from './ProductCard';
 
 export default class ProductList extends Component {
   render() {
-    const { productList } = this.props;
+    const { productList, updateCounter } = this.props;
     return (
       <>
         {productList.map(({ id, thumbnail, price, title, shipping }) => (
           <ProductCard
+            updateCounter={ updateCounter }
             key={ id }
             id={ id }
             image={ thumbnail }
@@ -30,4 +31,5 @@ ProductList.propTypes = {
       title: PropTypes.string,
     }),
   ).isRequired,
+  updateCounter: PropTypes.func.isRequired,
 };
