@@ -8,7 +8,7 @@ import ProductList from '../components/ProductList';
 
 class MainPage extends React.Component {
   state = {
-    categories: [],
+    // categories: [],
     products: [],
     query: '',
     firstSearch: false,
@@ -33,7 +33,7 @@ class MainPage extends React.Component {
 
   render() {
     const { history } = this.props;
-    const { categories, products, firstSearch } = this.state;
+    const { products, firstSearch } = this.state;
     return (
       <>
         <CategoryAside

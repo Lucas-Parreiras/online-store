@@ -7,13 +7,15 @@ export default class ProductList extends Component {
     const { productList } = this.props;
     return (
       <>
-        {productList.map(({ id, thumbnail, price, title }) => (<ProductCard
-          key={ id }
-          id={ id }
-          image={ thumbnail }
-          price={ price }
-          title={ title }
-        />))}
+        {productList.map(({ id, thumbnail, price, title, shipping }) => (
+          <ProductCard
+            key={ id }
+            id={ id }
+            image={ thumbnail }
+            price={ price }
+            title={ title }
+            freeShipping={ shipping.free_shipping }
+          />))}
       </>
     );
   }

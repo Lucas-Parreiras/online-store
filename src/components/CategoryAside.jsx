@@ -45,11 +45,12 @@ export default class CategoryAside extends React.Component {
 }
 
 CategoryAside.propTypes = {
-  categoryRenderList: PropTypes.func.isRequired,
-  categories: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string,
-      id: PropTypes.string,
-    }),
-  ).isRequired,
+  updateProducts: PropTypes.func.isRequired,
+  // categoryRenderList: PropTypes.func.isRequired,
+  // categories: PropTypes.arrayOf(
+  //   PropTypes.shape({
+  //     name: PropTypes.string,
+  //     id: PropTypes.string,
+  //   }),
+  // ).isRequired,
 };

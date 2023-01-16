@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { getProductById } from '../services/api';
 import navegation from '../services/navegation';
-import saveProduct from '../services/handlelocalstorage';
+import { saveProduct } from '../services/handlelocalstorage';
 import CommentForm from '../components/CommentForm';
 import CommentSection from '../components/CommentSection';
 import CategoryAside from '../components/CategoryAside';
@@ -45,34 +45,38 @@ export default class DetailProduct extends Component {
   };
 
   handleSaveComment = () => {
-    const { commentForm, id } = this.state;
+    const { commentForm, id, comments } = this.state;
     this.setState({ formError: false });
-    let comments = JSON.parse(localStorage.getItem(id));
-    if (!comments) {
+    let commentsLocalStorage = JSON.parse(localStorage.getItem(id));
+    if (!commentsLocalStorage) {
       localStorage.setItem(id, '[]');
-      comments = JSON.parse(localStorage.getItem(id));
+      commentsLocalStorage = JSON.parse(localStorage.getItem(id));
     }
-    comments.push(commentForm);
+    commentsLocalStorage.push(commentForm);
 
-    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    // const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const isEmailValid = re.test(commentForm.email);
-    const isMessageValid = commentForm.message !== '';
-    if (!isEmailValid || !isMessageValid) {
+    if (!isEmailValid || commentForm.rating === '') {
       this.setState({ formError: true });
       return;
     }
-    this.setState({ comments: [...this.state.comments, commentForm] });
+    this.setState({ comments: [...comments, commentForm] });
     this.setState({ commentForm: this.INITIAL_FORM });
-    localStorage.setItem(id, JSON.stringify(comments));
+    localStorage.setItem(id, JSON.stringify(commentsLocalStorage));
   };
 
   handleProductById = async () => {
     const { match: { params } } = this.props;
     const product = await getProductById(params.id);
-    this.setState({ name: product.title,
+    // const { shipping } = product;
+    this.setState({
+      name: product.title,
       image: product.thumbnail,
       id: params.id,
-      price: product.price });
+      price: product.price,
+      // freeShipping: shipping.free_shipping,
+    });
   };
 
   updateProducts = (data) => {

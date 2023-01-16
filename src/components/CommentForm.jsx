@@ -2,33 +2,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 export default class CommentForm extends Component {
-  // state = {
-  //   email: '',
-  //   message: '',
-  //   rating: 0,
-  //   id: '',
-  // };
-
-  // handleSaveComment = (id) => {
-  //   const comment = this.state;
-  //   let comments = JSON.parse(localStorage.getItem(id));
-  //   if (!comments) {
-  //     localStorage.setItem(id, '[]');
-  //     comments = JSON.parse(localStorage.getItem(id));
-  //   }
-  //   comments.push(comment);
-  //   localStorage.setItem(id, JSON.stringify(comments));
-  //   setState({ email: '', message: '', rating: 0, id: '' });
-  // };
-
-  // handleOnChange = ({ target: { name, value } }) => {
-  //   // console.log(target);
-  //   if (parseInt(value, 10) !== 'NaN') {
-  //     this.setState({ [name]: value });
-  //   }
-  //   this.setState({ [name]: value }, this.validationFields);
-  // };
-
   render() {
     const { id, handleOnChange, handleSaveComment, email, message } = this.props;
     return (
@@ -113,3 +86,11 @@ export default class CommentForm extends Component {
     );
   }
 }
+
+CommentForm.propTypes = {
+  email: PropTypes.string.isRequired,
+  handleOnChange: PropTypes.func.isRequired,
+  handleSaveComment: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
+};
