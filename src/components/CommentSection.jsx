@@ -20,8 +20,8 @@ export default class CommentSection extends Component {
   }
 }
 
-// CommentSection.propTypes = {
-//   comments: PropTypes.shape({
-//     map: PropTypes.func,
-//   }),
-// };
+CommentSection.propTypes = {
+  comments: PropTypes.shape({
+    map: PropTypes.func,
+  }).isRequired,
+};
