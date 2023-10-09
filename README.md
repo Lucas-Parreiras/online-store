@@ -1,10 +1,22 @@
-# :construction: README em construção ! :construction:
-<!-- Olá, Tryber!
-Esse é apenas um arquivo inicial para o README do seu projeto.
-É essencial que você preencha esse documento por conta própria, ok?
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
-:warning: IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
--->
+# Front-end Online Store
+
+Neste projeto foi criado uma versão simplificada, sem persistência no banco de dados, de uma loja online, desenvolvendo em grupo suas funcionalidades de acordo com demandas definidas em um quadro Kanban, em um cenário próximo ao do mercado de trabalho.
+
+A partir dessas demandas, construímos uma aplicação em que pessoas usuárias poderão:
+
+- Buscar produtos por termos e categorias a partir da API do Mercado Livre;
+- Interagir com os produtos buscados de modo a adicioná-los e removê-los de um carrinho de compras em diferentes quantidades;
+- Visualizar detalhes e avaliações prévias de um produto, bem como criar novas avaliações e;
+- Simular a finalização da compra dos itens selecionados.
+
+Este projeto foi desenvolvido em grupo com:
+
+Max Fukui: https://github.com/MaxFukui;
+Marcos Adriano: https://github.com/marcosadrianoti;
+João Pedro Santana: https://github.com/santanajoao;
+Harrison Couto: https://github.com/HarrisonSilva;
+
+Tecnologias utilizadas:
+- JavaScript;
+- ReactJS;
+- Metodologias ágeis;
